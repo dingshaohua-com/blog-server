@@ -51,4 +51,4 @@ jobs:
         run: |
          cd /home/apps-root/blog-server
          BUILD_ID=donKillMe
-         nohup java -jar ./target/*.jar &
+         nohup java -jar ./*.jar &
