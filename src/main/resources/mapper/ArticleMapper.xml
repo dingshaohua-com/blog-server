@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dshvv.blogserver.mapper.ArticleMapper">
+    <!-- 查询详情携带其类型名称-->
+    <select id="getOneWithType" resultType="com.dshvv.blogserver.vo.ArticleVO">
+        select a.*, t.name as type_name
+        from blog.article a
+        left join blog.type t on a.type_id = t.id
+        where a.id = #{id}
+    </select>
+    <select id="getArticlePage" resultType="com.dshvv.blogserver.vo.ArticleVO">
+        select a.id, a.title, a.description, a.type_id, a.create_time, t.name as type_name
+        from blog.article a
+        left join blog.type t on a.type_id = t.id
+        <where>
+            <if test="articleVO.title != '' and articleVO.title != null">
+                and a.title = #{articleVO.title}
+            </if>
+            <if test="articleVO.description != '' and articleVO.description != null">
+                and a.description = #{articleVO.description}
+            </if>
+            <if test="articleVO.typeId != '' and articleVO.typeId != null">
+                and a.type_id = #{articleVO.typeId}
+            </if>
+            <if test="articleVO.typeName != '' and articleVO.typeName != null">
+                and t.name = #{articleVO.typeName}
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+
+    <select id="getArticleCount" resultType="com.dshvv.blogserver.vo.ArticleCountVO">
+        select count(a.type_id) as total, t.id as type_id, t.name as type_name
+        from blog.type t left join blog.article a on t.id = a.type_id
+        group by t.id
+        union
+        select count(*) total, '0' type_id,'未分类' type_name
+        from blog.article
+        where type_id is null
+    </select>
+</mapper>
