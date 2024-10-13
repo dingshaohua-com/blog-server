@@ -64,6 +64,5 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          exec bash \-l
           cd /home/apps-root/blog-server
-          pwd
+          java -version
