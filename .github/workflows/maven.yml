@@ -54,5 +54,4 @@ jobs:
         script: |
           source /etc/profile
           cd /home/apps-root/blog-server
-          BUILD_ID=donKillMe
           nohup java -jar ./*.jar &
