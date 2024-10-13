@@ -23,38 +23,26 @@ jobs:
     - name: 迁出代码
       uses: actions/checkout@main
       
-    # - name: 安装 JDK
-    #   uses: actions/setup-java@main
-    #   with:
-    #     java-version: '17'
-    #     distribution: 'temurin'
-    #     cache: maven
+    - name: 安装 JDK
+      uses: actions/setup-java@main
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
         
-    # - name: 构建
-    #   run: mvn -B package --file pom.xml
+    - name: 构建
+      run: mvn -B package --file pom.xml
 
-    # - name: 发布到服务器
-    #   uses: easingthemes/ssh-deploy@main
-    #   with:
-    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     ARGS: "-avzr --delete --mkpath"
-    #     SOURCE: "target/blog-server-0.0.1-SNAPSHOT.jar"
-    #     REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-    #     REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
-    #     REMOTE_USER: root
-    #     TARGET: /home/apps-root/blog-server
-
-    # - name: 启动服务
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.REMOTE_HOST }}
-    #     port: ${{ secrets.REMOTE_PORT }}
-    #     username: root
-    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     script: |
-    #       cd /home/apps-root/blog-server
-    #       BUILD_ID=donKillMe
-    #       nohup java -jar ./*.jar &
+    - name: 发布到服务器
+      uses: easingthemes/ssh-deploy@main
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ARGS: "-avzr --delete --mkpath"
+        SOURCE: "target/blog-server-0.0.1-SNAPSHOT.jar"
+        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
+        REMOTE_USER: root
+        TARGET: /home/apps-root/blog-server
 
     - name: 启动服务
       uses: appleboy/ssh-action@master
@@ -65,4 +53,6 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           source /etc/profile
-          java -version
+          cd /home/apps-root/blog-server
+          BUILD_ID=donKillMe
+          nohup java -jar ./*.jar &
