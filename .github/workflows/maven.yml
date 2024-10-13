@@ -64,4 +64,4 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          $PATH
+          echo $PATH
