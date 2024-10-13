@@ -65,5 +65,3 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           $PATH
-          cd /home/apps-root/blog-server
-          java -version
